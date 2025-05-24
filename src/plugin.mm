@@ -13,6 +13,7 @@
 #include <albert/logging.h>
 #include <albert/standarditem.h>
 ALBERT_LOGGING_CATEGORY("dictionary")
+using namespace Qt::StringLiterals;
 using namespace albert;
 using namespace std;
 using namespace util;
@@ -23,7 +24,7 @@ using namespace util;
 namespace
 {
 
-const QStringList icon_urls = {"qfip:/System/Applications/Dictionary.app"};
+const QStringList icon_urls = {u"qfip:/System/Applications/Dictionary.app"_s};
 
 typedef NS_ENUM(NSInteger, DictionaryRecordVersion) {
     HTML = 0,
@@ -45,8 +46,8 @@ static function<void()> makeSearchFunc(const QString &term)
         // QUrl refuses to parse addressboolk urls. Use platform open.
         // https://bugreports.qt.io/browse/QTBUG-129496
         auto url = QString::fromUtf8(QUrl::toPercentEncoding(s));
-        url = QString("dict://%1").arg(url);
-        albert::runDetachedProcess({"open", url});
+        url = u"dict://%1"_s.arg(url);
+        runDetachedProcess({u"open"_s, url});
     };
 }
 
@@ -83,7 +84,7 @@ Plugin::Plugin():
     }
 {}
 
-QString Plugin::defaultTrigger() const { return QStringLiteral("def "); }
+QString Plugin::defaultTrigger() const { return u"def "_s; }
 
 void Plugin::handleTriggerQuery(Query &query)
 {
@@ -144,12 +145,12 @@ void Plugin::handleTriggerQuery(Query &query)
 
                     vector<Action> actions;
 
-                    actions.emplace_back("search_hw",
+                    actions.emplace_back(u"search_hw"_s,
                                          tr_.lookup_arg.arg(headword),
                                          makeSearchFunc(headword));
 
                     if (QString::compare(q_query, headword, Qt::CaseInsensitive) != 0)
-                        actions.emplace_back("search_q",
+                        actions.emplace_back(u"search_q"_s,
                                              tr_.lookup_arg.arg(q_query),
                                              makeSearchFunc(q_query));
 
@@ -165,11 +166,11 @@ vector<shared_ptr<Item> > Plugin::fallbacks(const QString &s) const
 {
     return {
         StandardItem::make(
-            "search",
+            u"search"_s,
             tr_.dict,
             tr_.lookup_arg.arg(s),
             icon_urls,
-            {{"search", tr_.lookup, makeSearchFunc(s) }}
+            {{u"search"_s, tr_.lookup, makeSearchFunc(s) }}
         )
     };
 }
