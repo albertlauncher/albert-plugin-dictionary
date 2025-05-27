@@ -9,14 +9,14 @@
 #include <CoreServices/CoreServices.h>
 #include <Foundation/Foundation.h>
 #include <QUrl>
-#include <albert/albert.h>
+#include <albert/systemutil.h>
 #include <albert/logging.h>
 #include <albert/standarditem.h>
 ALBERT_LOGGING_CATEGORY("dictionary")
 using namespace Qt::StringLiterals;
+using namespace albert::util;
 using namespace albert;
 using namespace std;
-using namespace util;
 #if  ! __has_feature(objc_arc)
 #error This file must be compiled with ARC.
 #endif
@@ -43,11 +43,7 @@ static function<void()> makeSearchFunc(const QString &term)
 {
     return [s = term]
     {
-        // QUrl refuses to parse addressboolk urls. Use platform open.
-        // https://bugreports.qt.io/browse/QTBUG-129496
-        auto url = QString::fromUtf8(QUrl::toPercentEncoding(s));
-        url = u"dict://%1"_s.arg(url);
-        runDetachedProcess({u"open"_s, url});
+        openUrl(u"dict:///"_s + QString::fromUtf8(QUrl::toPercentEncoding(s)));
     };
 }
 
