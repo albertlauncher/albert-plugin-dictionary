@@ -1,7 +1,7 @@
 if(APPLE)
 
     cmake_minimum_required(VERSION 3.16)
-    project(dictionary VERSION 5.5)
+    project(dictionary VERSION 5.6)
 
     find_package(Albert REQUIRED)
 

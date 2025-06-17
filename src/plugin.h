@@ -5,7 +5,7 @@
 #include <albert/fallbackhandler.h>
 #include <albert/triggerqueryhandler.h>
 
-class Plugin : public albert::ExtensionPlugin,
+class Plugin : public albert::util::ExtensionPlugin,
                public albert::TriggerQueryHandler,
                public albert::FallbackHandler
 {
