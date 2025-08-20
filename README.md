@@ -1,1 +1,1 @@
-# albert-plugin-dictionary
+# Albert plugin: Dictionary
