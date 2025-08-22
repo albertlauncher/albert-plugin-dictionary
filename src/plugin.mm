@@ -84,6 +84,7 @@ QString Plugin::defaultTrigger() const { return u"def "_s; }
 
 void Plugin::handleTriggerQuery(Query &query)
 {
+    vector<shared_ptr<Item>> items;
     auto &&q_query = query.string();
     auto ns_query = query.string().toNSString();
     auto cf_query = (__bridge CFStringRef)ns_query;
@@ -150,12 +151,13 @@ void Plugin::handleTriggerQuery(Query &query)
                                              tr_.lookup_arg.arg(q_query),
                                              makeSearchFunc(q_query));
 
-                    query.add(StandardItem::make(
+                    items.emplace_back(StandardItem::make(
                         id(), dict_name, text, icon_urls, ::move(actions)));
                 }
             }
         }
     }
+    query.add(items);
 }
 
 vector<shared_ptr<Item> > Plugin::fallbacks(const QString &s) const
