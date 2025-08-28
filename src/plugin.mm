@@ -8,10 +8,10 @@
 #include "plugin.h"
 #include <CoreServices/CoreServices.h>
 #include <Foundation/Foundation.h>
-#include <QUrl>
 #include <albert/systemutil.h>
 #include <albert/logging.h>
 #include <albert/standarditem.h>
+#include <albert/networkutil.h>
 ALBERT_LOGGING_CATEGORY("dictionary")
 using namespace Qt::StringLiterals;
 using namespace albert::util;
@@ -43,7 +43,7 @@ static function<void()> makeSearchFunc(const QString &term)
 {
     return [s = term]
     {
-        openUrl(u"dict:///"_s + QString::fromUtf8(QUrl::toPercentEncoding(s)));
+        openUrl(u"dict:///"_s + percentEncoded(s));
     };
 }
 
