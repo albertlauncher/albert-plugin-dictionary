@@ -8,10 +8,11 @@
 #include "plugin.h"
 #include <CoreServices/CoreServices.h>
 #include <Foundation/Foundation.h>
-#include <albert/systemutil.h>
+#include <albert/iconutil.h>
 #include <albert/logging.h>
-#include <albert/standarditem.h>
 #include <albert/networkutil.h>
+#include <albert/standarditem.h>
+#include <albert/systemutil.h>
 ALBERT_LOGGING_CATEGORY("dictionary")
 using namespace Qt::StringLiterals;
 using namespace albert::util;
@@ -24,7 +25,7 @@ using namespace std;
 namespace
 {
 
-const QStringList icon_urls = {u"qfip:/System/Applications/Dictionary.app"_s};
+static auto makeIcon() { return makeFileTypeIcon(u"/System/Applications/Dictionary.app"_s); }
 
 typedef NS_ENUM(NSInteger, DictionaryRecordVersion) {
     HTML = 0,
@@ -152,7 +153,7 @@ void Plugin::handleTriggerQuery(Query &query)
                                              makeSearchFunc(q_query));
 
                     items.emplace_back(StandardItem::make(
-                        id(), dict_name, text, icon_urls, ::move(actions)));
+                        id(), dict_name, text, makeIcon, ::move(actions)));
                 }
             }
         }
@@ -167,7 +168,7 @@ vector<shared_ptr<Item> > Plugin::fallbacks(const QString &s) const
             u"search"_s,
             tr_.dict,
             tr_.lookup_arg.arg(s),
-            icon_urls,
+            makeIcon,
             {{u"search"_s, tr_.lookup, makeSearchFunc(s) }}
         )
     };
