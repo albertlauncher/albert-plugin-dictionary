@@ -12,10 +12,10 @@
 #include <albert/logging.h>
 #include <albert/networkutil.h>
 #include <albert/standarditem.h>
+#include <QCoroGenerator>
 #include <albert/systemutil.h>
 ALBERT_LOGGING_CATEGORY("dictionary")
 using namespace Qt::StringLiterals;
-using namespace albert::util;
 using namespace albert;
 using namespace std;
 #if  ! __has_feature(objc_arc)
@@ -83,11 +83,11 @@ Plugin::Plugin():
 
 QString Plugin::defaultTrigger() const { return u"def "_s; }
 
-void Plugin::handleTriggerQuery(Query &query)
+ItemGenerator Plugin::items(QueryContext &ctx)
 {
     vector<shared_ptr<Item>> items;
-    auto &&q_query = query.string();
-    auto ns_query = query.string().toNSString();
+    auto q_query = ctx.query();
+    auto ns_query = ctx.query().toNSString();
     auto cf_query = (__bridge CFStringRef)ns_query;
 
     for (NSObject *ns_object in (__bridge NSArray *)DCSGetActiveDictionaries())
@@ -158,7 +158,8 @@ void Plugin::handleTriggerQuery(Query &query)
             }
         }
     }
-    query.add(items);
+
+    co_yield items;
 }
 
 vector<shared_ptr<Item> > Plugin::fallbacks(const QString &s) const

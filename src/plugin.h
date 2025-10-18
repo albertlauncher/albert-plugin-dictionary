@@ -3,17 +3,17 @@
 #pragma once
 #include <albert/extensionplugin.h>
 #include <albert/fallbackhandler.h>
-#include <albert/triggerqueryhandler.h>
+#include <albert/generatorqueryhandler.h>
 
-class Plugin : public albert::util::ExtensionPlugin,
-               public albert::TriggerQueryHandler,
+class Plugin : public albert::ExtensionPlugin,
+               public albert::GeneratorQueryHandler,
                public albert::FallbackHandler
 {
     ALBERT_PLUGIN
 public:
     Plugin();
     QString defaultTrigger() const override;
-    void handleTriggerQuery(albert::Query &) override;
+    albert::ItemGenerator items(albert::QueryContext &) override;
     std::vector<std::shared_ptr<albert::Item> > fallbacks(const QString &) const override;
 
 private:
