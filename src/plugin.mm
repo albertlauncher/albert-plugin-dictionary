@@ -8,11 +8,11 @@
 #include "plugin.h"
 #include <CoreServices/CoreServices.h>
 #include <Foundation/Foundation.h>
-#include <albert/iconutil.h>
+#include <QCoroGenerator>
+#include <albert/icon.h>
 #include <albert/logging.h>
 #include <albert/networkutil.h>
 #include <albert/standarditem.h>
-#include <QCoroGenerator>
 #include <albert/systemutil.h>
 ALBERT_LOGGING_CATEGORY("dictionary")
 using namespace Qt::StringLiterals;
@@ -25,7 +25,7 @@ using namespace std;
 namespace
 {
 
-static auto makeIcon() { return makeFileTypeIcon(u"/System/Applications/Dictionary.app"_s); }
+static auto makeIcon() { return Icon::fileType(u"/System/Applications/Dictionary.app"_s); }
 
 typedef NS_ENUM(NSInteger, DictionaryRecordVersion) {
     HTML = 0,
