@@ -83,7 +83,7 @@ Plugin::Plugin():
 
 QString Plugin::defaultTrigger() const { return u"def "_s; }
 
-ItemGenerator Plugin::items(QueryContext &ctx)
+ItemGenerator Plugin::items(QueryContext ctx)
 {
     vector<shared_ptr<Item>> items;
     auto q_query = ctx.query();

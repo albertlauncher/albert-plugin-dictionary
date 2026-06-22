@@ -13,7 +13,7 @@ class Plugin : public albert::ExtensionPlugin,
 public:
     Plugin();
     QString defaultTrigger() const override;
-    albert::ItemGenerator items(albert::QueryContext &) override;
+    albert::ItemGenerator items(albert::QueryContext) override;
     std::vector<std::shared_ptr<albert::Item> > fallbacks(const QString &) const override;
 
 private:
