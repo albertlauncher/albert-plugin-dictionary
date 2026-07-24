@@ -1,7 +1,7 @@
 if(APPLE)
 
     cmake_minimum_required(VERSION 3.16)
-    project(dictionary VERSION 5.7.2)
+    project(dictionary VERSION 5.8.0)
 
     find_package(Albert REQUIRED)
     find_package(QCoro6 REQUIRED COMPONENTS Coro)
